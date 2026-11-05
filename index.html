@@ -1,0 +1,1197 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow, noarchive">
+
+<title>The working model</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  color-scheme: light;
+  --bg:#FAF8F5; --surface:#FFFFFF; --sunk:#F2EFEA;
+  --ink:#1A1820; --muted:#6B6673; --faint:#9A94A2; --line:#E3DDD6;
+  --accent:#675BA0; --accent-soft:#EEEBF6;
+  --teal:#0F6E56; --teal-soft:#E2F3ED;
+  --amber:#8A5E1E; --amber-soft:#F7EEDD;
+  --rose:#B4453A; --sunk2:#EAE5DD; --figmid:#4A4653; --figdim:#7A7584;
+  --blue:#185FA5; --blue-soft:#E6F1FB;
+  --display:"Newsreader", Georgia, serif;
+  --body:"IBM Plex Sans", system-ui, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --bg:#15141A; --surface:#1D1C23; --sunk:#232229;
+    --ink:#EFECE7; --muted:#A5A0AE; --faint:#77727F; --line:#302E38;
+    --accent:#A697C7; --accent-soft:#2A2640;
+    --teal:#5DCAA5; --teal-soft:#14332C;
+    --amber:#D9B070; --amber-soft:#332A19;
+    --blue:#85B7EB; --blue-soft:#13263C;
+    --rose:#D98A94; --sunk2:#2C2B35; --figmid:#C6C1CE; --figdim:#9892A2;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --bg:#15141A; --surface:#1D1C23; --sunk:#232229;
+  --ink:#EFECE7; --muted:#A5A0AE; --faint:#77727F; --line:#302E38;
+  --accent:#A697C7; --accent-soft:#2A2640;
+  --teal:#5DCAA5; --teal-soft:#14332C;
+  --amber:#D9B070; --amber-soft:#332A19;
+  --blue:#85B7EB; --blue-soft:#13263C;
+  --rose:#D98A94; --sunk2:#2C2B35; --figmid:#C6C1CE; --figdim:#9892A2;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.65;
+  padding-inline:20px;padding-block:0;-webkit-font-smoothing:antialiased}
+.wrap{max-width:860px;margin:0 auto;padding-block:56px 80px}
+.lede{max-width:64ch}
+h1{font-family:var(--display);font-size:clamp(34px,5vw,50px);font-weight:500;line-height:1.08;
+  letter-spacing:-.02em;margin:0 0 18px;text-wrap:balance;max-width:16ch}
+h2{font-family:var(--display);font-size:clamp(24px,3.2vw,31px);font-weight:500;line-height:1.2;
+  letter-spacing:-.015em;margin:0 0 10px;text-wrap:balance}
+h3{font-size:16px;font-weight:600;margin:0 0 6px;letter-spacing:-.005em}
+p{margin:0 0 14px;color:var(--muted);max-width:64ch}
+p strong{color:var(--ink);font-weight:600}
+.kicker{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--faint);margin:0 0 12px}
+section{padding-block:44px;border-top:1px solid var(--line)}
+section:first-of-type{border-top:none}
+.num{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;color:var(--accent);
+  display:block;margin-bottom:9px}
+figure{margin:26px 0 8px}
+figcaption{font-size:13.5px;line-height:1.55;color:var(--faint);margin-top:12px;max-width:62ch}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px}
+.flow{display:grid;gap:10px}
+.stage{display:grid;grid-template-columns:132px 1fr;gap:16px;align-items:center;
+  background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:13px 16px}
+.stage .what{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:.04em}
+.stage .desc{font-size:14px;line-height:1.5;color:var(--muted)}
+.stage .desc b{color:var(--ink);font-weight:600}
+.tick{text-align:center;color:var(--faint);font-size:15px;line-height:1}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:640px){.grid2{grid-template-columns:1fr}.stage{grid-template-columns:1fr;gap:4px}}
+.card{border-radius:12px;padding:16px 17px;border:1px solid}
+.c-acc{background:var(--accent-soft);border-color:var(--accent);color:var(--ink)}
+.c-teal{background:var(--teal-soft);border-color:var(--teal);color:var(--ink)}
+.c-plain{background:var(--sunk);border-color:var(--line);color:var(--ink)}
+.card p{color:var(--muted);margin:5px 0 0;font-size:14px;line-height:1.5}
+.tag{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--faint);display:block;margin-bottom:5px}
+
+table{width:100%;border-collapse:collapse;font-size:14.5px}
+.scroller{overflow-x:auto}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--faint);text-align:left;font-weight:500;padding:0 12px 9px 0;white-space:nowrap}
+td{padding:10px 12px 10px 0;border-top:1px solid var(--line);color:var(--muted);vertical-align:top}
+td:first-child{color:var(--ink)}
+td.yes{color:var(--teal);font-weight:600}
+td.no{color:var(--faint)}
+tr.diff td{background:var(--amber-soft)}
+
+.tree{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;align-items:start}
+@media (max-width:640px){.tree{grid-template-columns:repeat(2,1fr)}}
+.node{border-radius:10px;padding:10px 11px;border:1px solid;font-size:13.5px;line-height:1.35}
+.root{background:var(--accent-soft);border-color:var(--accent)}
+.kid{background:var(--teal-soft);border-color:var(--teal)}
+.node .sub{display:block;font-family:var(--mono);font-size:10.5px;color:var(--faint);margin-top:3px}
+.vline{width:1px;height:14px;background:var(--line);margin:0 auto}
+
+.slider{margin-top:16px}
+.slider label{font-size:13px;color:var(--muted);display:block;margin-bottom:7px}
+.slider input{width:100%;accent-color:var(--accent)}
+.readout{display:flex;align-items:baseline;gap:10px;margin-top:12px;flex-wrap:wrap}
+.readout .big{font-family:var(--mono);font-size:26px;font-weight:500;color:var(--ink);
+  font-variant-numeric:tabular-nums}
+.readout .note{font-size:13px;color:var(--faint)}
+.mix{height:8px;border-radius:99px;overflow:hidden;display:flex;margin-top:10px;background:var(--sunk)}
+.mix i{display:block;height:8px}
+
+.ladder{display:grid;gap:10px}
+.rung{display:grid;grid-template-columns:104px 1fr;gap:14px;align-items:stretch}
+@media (max-width:640px){.rung{grid-template-columns:1fr}}
+.when{border-radius:10px;border:1px solid;display:flex;flex-direction:column;justify-content:center;
+  align-items:center;text-align:center;padding:10px 8px;font-family:var(--mono);font-size:11px;
+  letter-spacing:.08em;text-transform:uppercase;line-height:1.5}
+.w-now{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.w-next{background:var(--teal-soft);border-color:var(--teal);color:var(--teal)}
+.w-later{background:var(--amber-soft);border-color:var(--amber);color:var(--amber)}
+.status{display:grid;gap:7px;margin-top:6px}
+.st{display:grid;grid-template-columns:22px 1fr;gap:10px;align-items:start;font-size:14.5px}
+.st .mk{font-family:var(--mono);font-size:13px;color:var(--teal);line-height:1.6}
+.st .mk.todo{color:var(--faint)}
+.st span:last-child{color:var(--muted)}
+.st b{color:var(--ink);font-weight:600}
+a{color:var(--accent);text-underline-offset:2px}
+.warn{border:1px solid var(--amber);background:var(--amber-soft);border-radius:12px;
+  padding:15px 17px;margin:22px 0}
+.warn p{color:var(--ink);margin:0;max-width:none}
+.warn p+p{margin-top:9px}
+.grp{border-radius:12px;border:1px solid var(--line);overflow:hidden;margin-bottom:11px}
+.grp .gh{padding:10px 15px;font-size:14px;font-weight:600;display:flex;justify-content:space-between;
+  gap:10px;flex-wrap:wrap;align-items:baseline;background:var(--sunk)}
+.grp .gh em{font-style:normal;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted);font-weight:400}
+.grp .gr{display:grid;grid-template-columns:1fr 130px;gap:12px;padding:10px 15px;font-size:14px;
+  border-top:1px solid var(--line);align-items:baseline}
+.grp .gr .m{color:var(--ink);line-height:1.35}
+.grp .gr .m em{font-style:normal;display:block;font-size:12.5px;color:var(--muted);margin-top:3px}
+.grp .gr .h{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.pair{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:11px}
+.pair .ph{background:var(--sunk);padding:9px 15px;font-size:15px;font-weight:600;color:var(--ink)}
+.pair .pb{display:grid;grid-template-columns:1fr 1fr}
+.pair .half{padding:13px 15px;font-size:13.5px;line-height:1.55;color:var(--muted)}
+.pair .half:first-child{border-right:1px solid var(--line);background:var(--amber-soft)}
+.pair .half:last-child{background:var(--teal-soft)}
+.pair .half b{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;
+  text-transform:uppercase;margin-bottom:5px;color:var(--ink)}
+@media (max-width:640px){.grp .gr{grid-template-columns:1fr;gap:3px}
+  .pair .pb{grid-template-columns:1fr}
+  .pair .half:first-child{border-right:none;border-bottom:1px solid var(--line)}}
+.src{font-size:12.5px;line-height:1.7;color:var(--faint);margin-top:14px}
+td .em{display:block;font-size:12px;color:var(--faint);margin-top:2px}
+.pill{font-family:var(--mono);font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;
+  padding:3px 8px;border-radius:99px;white-space:nowrap;display:inline-block}
+.pill.have{background:var(--teal-soft);color:var(--teal)}
+.pill.want{background:var(--amber-soft);color:var(--amber)}
+.pill.soon{background:var(--sunk);color:var(--muted)}
+footer{border-top:1px solid var(--line);margin-top:44px;padding-top:22px;font-size:13.5px;color:var(--faint)}
+.viewer{margin-top:22px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--sunk)}
+.vwrap{position:relative;width:100%;aspect-ratio:16/10;min-height:250px}
+#scene3d{display:block;width:100%;height:100%;touch-action:none;cursor:grab}
+#scene3d:active{cursor:grabbing}
+.vbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
+  padding:10px 14px;border-top:1px solid var(--line)}
+.vbtns{display:flex;gap:6px;flex-wrap:wrap}
+.vb{font-family:var(--body);font-size:12.5px;padding:6px 12px;border-radius:8px;cursor:pointer;
+  border:1px solid var(--line);background:var(--surface);color:var(--muted)}
+.vb.on{border-color:var(--accent);color:var(--accent)}
+.vhint{font-size:11.5px;color:var(--faint);font-family:var(--mono)}
+.vscrub{padding:12px 14px;border-top:1px solid var(--line)}
+.vscrub label{font-size:12.5px;color:var(--muted);display:block;margin-bottom:7px}
+.vscrub label span{color:var(--ink);font-family:var(--mono)}
+.vscrub input{width:100%;accent-color:var(--accent)}
+.vwhat{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px;min-height:24px}
+.vwhat b{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;
+  padding:4px 9px;border-radius:99px;font-weight:400}
+.vwhat b.pickable{cursor:pointer;user-select:none}
+.vwhat b.pickable:hover{box-shadow:0 0 0 2px var(--sunk),0 0 0 3px currentColor}
+.vwhat b.pickable.on{font-weight:500}
+.vkey{display:flex;gap:16px;flex-wrap:wrap;padding:10px 14px;border-top:1px solid var(--line);
+  font-size:11.5px;color:var(--muted)}
+.vkey i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.vwrap{position:relative}
+.vlabels{position:absolute;inset:0;pointer-events:none}
+.vl{position:absolute;font-family:var(--body);font-size:12.5px;color:var(--muted);white-space:nowrap;
+  line-height:1;text-shadow:0 0 4px var(--sunk),0 0 4px var(--sunk)}
+.vl.left{transform:translate(-100%,-50%);padding-right:10px;font-weight:500;color:var(--ink)}
+.vl.below{transform:translate(-50%,6px);font-family:var(--mono);font-size:11px;color:var(--faint)}
+.vtabs{display:flex;gap:4px;padding:10px 14px 0}
+.vt{font-family:var(--body);font-size:13px;padding:7px 14px;border-radius:9px 9px 0 0;cursor:pointer;
+  border:1px solid transparent;border-bottom:none;background:none;color:var(--muted)}
+.vt.on{background:var(--surface);border-color:var(--line);color:var(--ink);font-weight:500}
+.loopwrap{padding:18px 16px 4px;background:var(--surface)}
+.loopwrap svg{display:block}
+.arw{stroke:var(--line);stroke-width:1.6;transition:stroke .18s,stroke-width .18s,opacity .18s;opacity:.55}
+.arw.live{stroke:var(--accent);stroke-width:2.6;opacity:1}
+.loopnote{font-size:13px;line-height:1.55;color:var(--muted);margin:14px 0 10px;max-width:none}
+.loopnote b{color:var(--ink);font-weight:500}
+[hidden]{display:none!important}
+.steps{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.sb{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:var(--sunk);
+  color:var(--muted);font-family:var(--mono);font-size:12.5px;cursor:pointer;padding:0}
+.sb.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.sb.done{border-color:var(--accent);color:var(--accent)}
+.steptitle{font-size:14px;color:var(--ink);font-weight:500;margin-left:8px}
+.stepnav{margin-left:auto;display:flex;gap:6px}
+.sn{font-family:var(--body);font-size:12.5px;padding:6px 13px;border-radius:8px;cursor:pointer;
+  border:1px solid var(--line);background:var(--surface);color:var(--muted)}
+.sn:disabled{opacity:.4;cursor:default}
+.loopwrap .hidden-step{opacity:0;pointer-events:none;transition:opacity .25s}
+.loopwrap .shown-step{opacity:1;transition:opacity .25s}
+.arw.fast{stroke-dasharray:5 3}
+.arw.fast.live{stroke-dasharray:5 3}
+.cases{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.cs{font-family:var(--body);font-size:12.5px;padding:7px 13px;border-radius:999px;cursor:pointer;
+  border:1px solid var(--line);background:var(--surface);color:var(--muted)}
+.cs.on{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.casebox{margin-top:14px;font-size:13.5px;line-height:1.6}
+.casebox .ct{color:var(--ink);font-weight:600;margin:0 0 5px}
+.casebox p{color:var(--muted);margin:0 0 11px;max-width:72ch}
+.casebox .lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--faint);display:block;margin-bottom:4px}
+.casebox .what{border-left:2px solid var(--accent);padding-left:12px}
+.casebox .cday{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--faint);
+  font-weight:400;text-transform:uppercase;margin-left:5px}
+.dayrow{margin-bottom:2px}
+.vl.face{transform:translate(-50%,-50%);font-size:11.5px;font-weight:500;color:var(--ink);
+  text-shadow:0 0 5px var(--sunk),0 0 5px var(--sunk),0 0 5px var(--sunk)}
+.vl.face.head{font-size:14px;letter-spacing:.01em}
+.vl.face.sub{font-size:10px;font-weight:400;color:var(--muted);font-family:var(--mono);
+  letter-spacing:-.01em}
+.vl.faintlabel{font-weight:400;color:var(--faint)}
+.contents{display:flex;gap:18px;flex-wrap:wrap;margin-top:20px}
+.cbox{flex:1 1 300px;min-width:280px;border:1px solid var(--line);border-radius:12px;padding:14px 16px 6px;
+  background:var(--surface)}
+.cbox h3{font-size:15px;margin:0 0 12px;color:var(--ink);font-weight:500}
+.ccell{margin-bottom:16px}
+.ccell h4{font-size:13px;margin:0 0 6px;color:var(--ink);font-weight:500}
+.ccell h4 em{font-style:normal;font-size:11px;color:var(--faint);font-weight:400}
+.cg{display:flex;gap:9px;margin:0 0 5px;font-size:12.5px;line-height:1.5;color:var(--muted);max-width:none}
+.cg span{flex:0 0 118px;font-family:var(--mono);font-size:10.5px;line-height:1.75;
+  letter-spacing:.04em;text-transform:uppercase;color:var(--ink)}
+.cg em{flex:1 1 auto;font-style:normal;min-width:0}
+.cg.prop span,.cg.prop{color:var(--faint)}
+.vl.cell{font-size:11.5px;font-weight:500}
+.vl.face.sub{font-size:9px;letter-spacing:-.02em}
+.vl.face.cell{font-size:12px}
+.vl.twoline{white-space:normal;text-align:center;line-height:1.15}
+/* A two line caption is one line taller, and centred on the same point it
+   hangs that extra line down over the pipes. Lift it by the extra line so its
+   bottom edge sits exactly where a one line caption's does. */
+.vl.face.twoline{transform:translate(-50%,calc(-50% - 0.67em))}
+.cg i{flex:0 0 16px;font-family:var(--mono);font-size:10.5px;font-style:normal;line-height:1.75;
+  color:var(--faint);text-align:right}
+.vl.tip{transform:translate(-50%,-100%);font-size:12.5px;font-weight:500;color:var(--ink);
+  background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:4px 9px;
+  white-space:nowrap;line-height:1.2;text-shadow:none;box-shadow:0 2px 10px rgba(0,0,0,.09)}
+.vl.tip.faintlabel{color:var(--muted);font-weight:400}
+.cg em u{text-decoration:none;border-bottom:1px dotted var(--faint);padding-bottom:1px}
+.fig{margin:26px 0 8px}
+.fig svg{display:block;width:100%;height:auto}
+</style>
+
+<div class="wrap">
+  <p class="kicker">Sensitive &amp; Connected &middot; reasoning engine</p>
+  <h1>The working model</h1>
+  <p class="lead">Every box we have, with everything proposed for it. This is the one we edit.
+  The presentation copy is a separate page and does not change when this does.</p>
+
+  <p class="lead">What the whole thing is for, before any of the detail. Two steps, and a loop:
+  measure her until the model can guess, then change one thing on purpose and see if it held.</p>
+
+  <div class="fig">
+    <svg viewBox="0 0 680 620" xmlns="http://www.w3.org/2000/svg" font-family="var(--body)" role="img">
+      <title>The model's path in two steps: measure, then experiment</title>
+      <desc>Step one, measure, has two halves: learn her normal, then guess state, behaviour and
+      environment from markers alone with a confidence. Step two, experiment, changes one thing on
+      purpose with her and checks whether her window widened. The loop returns to step one because
+      every experiment is more days.</desc>
+      <defs>
+        <marker id="pathar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <rect x="90" y="26" width="550" height="48" rx="8" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.4"/>
+      <text x="108" y="46" font-size="10.5" letter-spacing="0.8" fill="var(--teal)">THE STANDING GOAL</text>
+      <text x="108" y="64" font-size="13.5" font-weight="600" fill="var(--ink)">More of her life inside her window of tolerance</text>
+      <line x1="365" y1="78" x2="365" y2="96" stroke="var(--line)" stroke-width="1.5" marker-end="url(#pathar)"/>
+
+      <rect x="90" y="102" width="550" height="316" rx="10" fill="none" stroke="var(--line)" stroke-dasharray="6 4"/>
+      <text x="110" y="128" font-size="14" font-weight="600" fill="var(--ink)">1.  MEASURE</text>
+
+      <rect x="110" y="140" width="510" height="78" rx="8" fill="var(--sunk)" stroke="var(--line)"/>
+      <text x="130" y="164" font-size="13" font-weight="600" fill="var(--ink)">A    Learn her normal</text>
+      <text x="130" y="185" font-size="11.5" fill="var(--muted)">Record markers, behaviour and environment together, day after day.</text>
+      <text x="130" y="203" font-size="11.5" fill="var(--muted)">What ordinary looks like for her, in each situation she is in.</text>
+      <line x1="365" y1="222" x2="365" y2="238" stroke="var(--line)" stroke-width="1.5" marker-end="url(#pathar)"/>
+
+      <rect x="110" y="244" width="510" height="136" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.3"/>
+      <text x="130" y="268" font-size="13" font-weight="600" fill="var(--ink)">B    Guess all three, from markers alone</text>
+      <text x="130" y="287" font-size="11.5" fill="var(--muted)">Each guess carries how sure it is.</text>
+      <text x="142" y="314" font-size="12.5" font-weight="600" fill="var(--ink)">state</text>
+      <text x="270" y="314" font-size="11.5" fill="var(--muted)">what we actually want. No answer key, ever.</text>
+      <text x="142" y="336" font-size="12.5" font-weight="600" fill="var(--ink)">behaviour</text>
+      <text x="270" y="336" font-size="11.5" fill="var(--muted)">also measured, so the guess can be marked</text>
+      <text x="142" y="358" font-size="12.5" font-weight="600" fill="var(--ink)">environment</text>
+      <text x="270" y="358" font-size="11.5" fill="var(--muted)">also told, so the guess can be marked</text>
+      <text x="110" y="402" font-size="11.5" fill="var(--muted)">Being right about the two we can check is what makes the third worth believing.</text>
+
+      <line x1="365" y1="422" x2="365" y2="438" stroke="var(--line)" stroke-width="1.5" marker-end="url(#pathar)"/>
+
+      <rect x="90" y="444" width="550" height="124" rx="10" fill="none" stroke="var(--line)" stroke-dasharray="6 4"/>
+      <text x="110" y="470" font-size="14" font-weight="600" fill="var(--ink)">2.  EXPERIMENT</text>
+      <rect x="110" y="482" width="510" height="72" rx="8" fill="var(--amber-soft)" stroke="var(--amber)" stroke-width="1.3"/>
+      <text x="130" y="505" font-size="11.5" fill="var(--muted)">Change one thing on purpose, with her, and see whether it holds.</text>
+      <text x="130" y="523" font-size="11.5" fill="var(--muted)">Did her window widen?</text>
+      <text x="130" y="543" font-size="12.5" font-weight="600" fill="var(--ink)">More time in it.    Fewer trips out.    Shorter trips.</text>
+
+      <path d="M90 518 L62 518 L62 179 L106 179" fill="none" stroke="var(--line)" stroke-width="1.5" marker-end="url(#pathar)"/>
+      <text x="62" y="596" font-size="11.5" fill="var(--faint)">The arrow back: every experiment is more days, so her normal moves and it runs again.</text>
+    </svg>
+    <figcaption>Everything before the experiment is still measurement. Learning her normal and
+    guessing from markers are the same ambition at two stages, which is why they sit inside one
+    step rather than beside each other. The arrow back lands inside it: an experiment does not end
+    the measuring, it feeds it.</figcaption>
+  </div>
+
+  <section>
+    <span class="num">01</span>
+    <h2>The model as it stands</h2>
+    <p>Two see-through boxes running along time. Inside each, the same four boxes as on the
+    mechanism map, in the same square. Inside those, the named boxes. Inside those, the days.</p>
+    <p>The axis is <strong>minutes</strong>, not days. Ninety days is the same width it always was,
+    but the zoom keeps going. Press <strong>Into this day</strong> and everything outside the day
+    the slider is on is cut away, so the same nest of boxes is left holding one day. It runs
+    <strong>six in the morning to six the next morning</strong>, and the marks under the model
+    stop saying days and start saying the time. Press the button again for the run back.</p>
+    <p>The environment box is split by <strong>how fast a thing moves</strong>, because that
+    decides what the model can do with it. <strong>Around you</strong> and <strong>conditions</strong>
+    are the moment: they change within a day, so they can cut a baseline in two, her heart at home
+    against her heart at work. <strong>The standing floor</strong> is the bottom tier, and it is two
+    boxes: <strong>environmental safety</strong>, whether the ground is there at all, and
+    <strong>meaning and agency</strong>, whether the life on top of it is worth having. Somebody can
+    have one without the other. It holds for weeks or months and it cannot cut anything, because if
+    she has been housed all year there is no unhoused half of her to compare against. What it does
+    instead is move where her whole normal sits. <strong>What happens</strong> is dated and then over, and those are the things a baseline
+    is used to judge, never the yardstick.</p>
+
+    <p><strong>Work is a place and a thing she does, so it is in the model twice.</strong>
+    <strong>The workplace</strong> is a place, beside home and outside. <strong>Working</strong> is
+    a stretch of her doing it, over in the person box with her other behaviour. That split is what
+    lets all four be true: at the workplace working, at the workplace on a break, at home working,
+    at home not. Two of her five working days are worked from home, and on those the working pipe
+    runs across the hours she is also at home. Nothing in the model requires a box to be alone.</p>
+
+    <p><strong>People reach the model two ways.</strong> <strong>How much of the day had people
+    in it</strong> is a daily tap, because a tap is a good instrument for a total and a bad one for
+    an instant. Everything else is told at length and believed for months: <strong>who she lives
+    with</strong>, <strong>who she could turn to</strong>, and <strong>whether those relationships
+    are any good</strong>. Structure, availability, quality. Three questions that can disagree with
+    each other, which is why they are kept apart: somebody can live with people, have nobody to
+    call, and say the relationships are fine.</p>
+
+    <p>There was a third way and it is gone. Asking <strong>is anyone with you right now</strong>
+    in the moment gave twelve answers across ninety days, which is thirty six minutes of labelled
+    time out of a hundred and thirty thousand. A context cannot split a baseline on that, and the
+    asking landed on her hardest afternoons, which is where it feels least like care. If the
+    companion wants to know, it asks in conversation and the answer stays there.</p>
+
+    <p>Nothing senses anything on <strong>the standing floor</strong>. Every value in it is one she
+    tells us, so each carries the date she answered and loses confidence as it ages rather than
+    quietly changing to something she never said. They are the same fifteen things as
+    <strong>needs</strong> in the person box, read as standing facts about a situation.</p>
+
+    <p>A <strong>dashed</strong> box is one nobody has agreed to yet. It is there so it can be
+    argued with, not because it is settled.</p>
+    <p><strong>Press one of the tags under the slider and the rest of the model steps back</strong>,
+    so you see that one thing on its own and where it sits. Press it again to bring everything back.
+    The tags are the things that come and go: environment, state and behaviour. What the sensors
+    record is there every day, so it is not listed.</p>
+    <p><strong>Hover a box and it says its name.</strong> Nothing else is written on the model, so
+    nothing covers anything. The full list is written out underneath.</p>
+    <p><strong>Scroll to move around the model</strong> without turning it, up and down or side to
+    side. On a mouse with only one wheel, hold shift to go sideways. Hold ctrl or cmd and scroll to
+    zoom in on whatever is under the pointer. Dragging still spins it, and <strong>Default</strong>
+    puts it back.</p>
+
+    <div class="viewer">
+      <div class="vtabs" role="tablist">
+        <button class="vt on" data-pane="map" type="button" role="tab" aria-selected="true">Map</button>
+        <button class="vt" data-pane="3d" type="button" role="tab" aria-selected="false">3D model</button>
+      </div>
+
+      <div id="pane-map" class="loopwrap">
+        <div class="steps">
+          <button class="sb on" data-step="1" type="button">1</button>
+          <button class="sb" data-step="2" type="button">2</button>
+          <button class="sb" data-step="3" type="button">3</button>
+          <button class="sb" data-step="4" type="button">4</button>
+          <button class="sb" data-step="5" type="button">5</button>
+          <button class="sb" data-step="6" type="button">6</button>
+          <span class="steptitle" id="steptitle">A person and their world</span>
+          <span class="stepnav">
+            <button class="sn" id="sprev" type="button">Back</button>
+            <button class="sn" id="snext" type="button">Next</button>
+          </span>
+        </div>
+        <svg width="100%" viewBox="0 0 680 392" role="img">
+          <title>A person and their environment, with the fast and slow routes to behaviour</title>
+          <desc>Two equal blocks. The environment acts on the body and sets what is on the menu.
+          Inside the person, behaviour is reached two ways: a fast lane straight from state with no
+          deciding, and a slow lane through needs and reasoning. Across the top, the two narrow
+          windows a sensor gives onto the body and onto the world.</desc>
+          <defs>
+            <marker id="ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+              <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </marker>
+          </defs>
+          <g class="k6">
+            <rect x="6" y="4" width="270" height="36" rx="10" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="1.4"/>
+            <text x="141" y="20" text-anchor="middle" fill="var(--ink)" font-size="12.5">environment markers</text>
+            <text x="141" y="33" text-anchor="middle" fill="var(--muted)" font-size="10">a narrow window onto the world</text>
+            <path id="a-env-mark" class="arw" d="M40 84 L40 46" fill="none" marker-end="url(#ah)"/>
+            <text x="48" y="68" fill="var(--muted)" font-size="10">shows</text>
+            <rect x="422" y="4" width="234" height="36" rx="10" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="1.4"/>
+            <text x="539" y="20" text-anchor="middle" fill="var(--ink)" font-size="12.5">body markers</text>
+            <text x="539" y="33" text-anchor="middle" fill="var(--muted)" font-size="10">the only window onto state</text>
+            <path id="a-state-mark" class="arw" d="M472 108 L472 46" fill="none" marker-end="url(#ah)"/>
+            <text x="480" y="82" fill="var(--muted)" font-size="10">shows</text>
+          </g>
+          <text x="156" y="74" text-anchor="middle" fill="var(--ink)" font-size="16">environment</text>
+          <text x="404" y="74" text-anchor="start" fill="var(--ink)" font-size="16">a person</text>
+          <rect x="6" y="88" width="300" height="212" rx="16" fill="var(--amber-soft)"
+                stroke="var(--amber)" stroke-width="1.5"/>
+          <rect x="404" y="88" width="270" height="212" rx="16" fill="var(--accent-soft)"
+                stroke="var(--accent)" stroke-width="1.5"/>
+          <g class="k5">
+            <text x="18" y="107" fill="var(--muted)" font-size="8.5" font-family="var(--mono)" letter-spacing="1">THE MOMENT</text>
+            <rect x="18" y="112" width="133" height="46" rx="9" fill="var(--bg)" stroke="var(--amber)" stroke-width="1.2" stroke-dasharray="4 3"/>
+            <text x="84" y="131" text-anchor="middle" fill="var(--ink)" font-size="12">around you</text>
+            <text x="84" y="145" text-anchor="middle" fill="var(--muted)" font-size="9">where, who, contact</text>
+            <rect x="159" y="112" width="133" height="46" rx="9" fill="var(--bg)" stroke="var(--amber)" stroke-width="1.2" stroke-dasharray="4 3"/>
+            <text x="225" y="131" text-anchor="middle" fill="var(--ink)" font-size="12">conditions</text>
+            <text x="225" y="145" text-anchor="middle" fill="var(--muted)" font-size="9">light, noise, air</text>
+
+            <text x="18" y="175" fill="var(--muted)" font-size="8.5" font-family="var(--mono)" letter-spacing="1">DATED, THEN OVER</text>
+            <rect x="18" y="180" width="274" height="36" rx="9" fill="var(--bg)" stroke="var(--amber)" stroke-width="1.2" stroke-dasharray="4 3"/>
+            <text x="155" y="196" text-anchor="middle" fill="var(--ink)" font-size="12">what happens</text>
+            <text x="155" y="209" text-anchor="middle" fill="var(--muted)" font-size="9">demands, events, ups and downs</text>
+
+            <text x="18" y="233" fill="var(--muted)" font-size="8.5" font-family="var(--mono)" letter-spacing="1">THE STANDING FLOOR</text>
+            <rect x="18" y="238" width="133" height="46" rx="9" fill="var(--bg)" stroke="var(--amber)" stroke-width="1.2" stroke-dasharray="4 3"/>
+            <text x="84" y="257" text-anchor="middle" fill="var(--ink)" font-size="11">environmental safety</text>
+            <text x="84" y="271" text-anchor="middle" fill="var(--muted)" font-size="9">food, housing, warmth</text>
+            <rect x="159" y="238" width="133" height="46" rx="9" fill="var(--bg)" stroke="var(--amber)" stroke-width="1.2" stroke-dasharray="4 3"/>
+            <text x="225" y="257" text-anchor="middle" fill="var(--ink)" font-size="11">meaning and agency</text>
+            <text x="225" y="271" text-anchor="middle" fill="var(--muted)" font-size="9">work, people, play</text>
+          </g>
+          <g class="k2">
+            <rect x="422" y="112" width="100" height="58" rx="10" fill="var(--bg)" stroke="var(--accent)" stroke-width="1.3" stroke-dasharray="4 3"/>
+            <text x="472" y="136" text-anchor="middle" fill="var(--ink)" font-size="12.5">state</text>
+            <text x="472" y="152" text-anchor="middle" fill="var(--muted)" font-size="10">how the body is</text>
+            <rect x="422" y="204" width="100" height="58" rx="10" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.4"/>
+            <text x="472" y="228" text-anchor="middle" fill="var(--ink)" font-size="12.5">behaviour</text>
+            <text x="472" y="244" text-anchor="middle" fill="var(--muted)" font-size="10">what you do</text>
+            <path id="a-beh-state"  class="arw" d="M448 200 L448 174" fill="none" marker-end="url(#ah)"/>
+            <path id="a-state-fast" class="arw fast" d="M496 174 L496 200" fill="none" marker-end="url(#ah)"/>
+            <text x="442" y="191" text-anchor="end" fill="var(--muted)" font-size="9.8">acts back</text>
+            <text x="502" y="188" fill="var(--muted)" font-size="9.5">fast lane,</text>
+            <text x="502" y="199" fill="var(--muted)" font-size="9.5">no deciding</text>
+          </g>
+          <g class="k3">
+            <rect x="556" y="112" width="100" height="58" rx="10" fill="var(--bg)" stroke="var(--accent)" stroke-width="1.3" stroke-dasharray="4 3"/>
+            <text x="606" y="133" text-anchor="middle" fill="var(--ink)" font-size="12.5">needs</text>
+            <text x="606" y="148" text-anchor="middle" fill="var(--muted)" font-size="9.8">physical: rest, food</text>
+            <text x="606" y="161" text-anchor="middle" fill="var(--muted)" font-size="9.8">emotional: safety</text>
+            <path id="a-state-needs" class="arw" d="M526 141 L552 141" fill="none" marker-end="url(#ah)"/>
+            <text x="539" y="104" text-anchor="middle" fill="var(--muted)" font-size="10">makes urgent</text>
+          </g>
+          <g class="k4">
+            <rect x="556" y="204" width="100" height="58" rx="10" fill="var(--bg)" stroke="var(--accent)" stroke-width="1.3" stroke-dasharray="4 3"/>
+            <text x="606" y="225" text-anchor="middle" fill="var(--ink)" font-size="12.5">reasoning</text>
+            <text x="606" y="240" text-anchor="middle" fill="var(--muted)" font-size="9.8">how it gets weighed</text>
+            <text x="606" y="253" text-anchor="middle" fill="var(--muted)" font-size="9.8">noticed or not</text>
+            <path id="a-needs-reason" class="arw" d="M606 174 L606 200" fill="none" marker-end="url(#ah)"/>
+            <path id="a-reason-beh"   class="arw" d="M552 233 L526 233" fill="none" marker-end="url(#ah)"/>
+            <text x="613" y="191" fill="var(--muted)" font-size="9.8">weighs</text>
+            <text x="539" y="276" text-anchor="middle" fill="var(--muted)" font-size="9.8">comes out as</text>
+          </g>
+          <path id="a-env-state" class="arw" d="M310 140 C336 132 362 132 398 140" fill="none" marker-end="url(#ah)"/>
+          <text x="354" y="122" text-anchor="middle" fill="var(--muted)" font-size="11">acts on you</text>
+          <path id="a-beh-env" class="arw" d="M418 242 C380 256 344 244 310 226" fill="none" marker-end="url(#ah)"/>
+          <text x="356" y="316" text-anchor="middle" fill="var(--muted)" font-size="11">you act on it, and change it</text>
+          <path id="a-env-reason" class="arw k5" d="M150 304 C266 358 480 352 602 268" fill="none" marker-end="url(#ah)"/>
+          <text x="368" y="384" text-anchor="middle" fill="var(--muted)" font-size="11" class="k5">and sets what is on the menu</text>
+        </svg>
+        <p class="loopnote" id="loopnote"></p>
+      </div>
+
+      <div id="pane-3d" hidden>
+      <div class="vwrap"><canvas id="scene3d"></canvas></div>
+      <div class="vbar">
+        <div class="vbtns">
+          <button class="vb on" data-view="default" type="button">Default</button>
+          <button class="vb" id="goday" type="button">Into this day</button>
+        </div>
+        <div class="vhint">scroll to move in any direction &middot; ctrl or cmd and scroll to zoom &middot; drag to spin</div>
+      </div>
+      <div class="vscrub">
+        <div class="dayrow"><label for="day3d">Day <span id="daynum">46</span> of 90</label>
+        <input id="day3d" type="range" min="1" max="90" value="46"></div>
+        <div id="daywhat" class="vwhat"></div>
+      </div>
+      <div class="vkey">
+        <span><i style="background:#D9B070"></i>environment</span>
+        <span><i style="background:#F2DFB0"></i>told at length, and believed for months</span>
+        <span><i style="background:#7E92A8"></i>looked up, by city</span>
+        <span><i style="background:#5DCAA5"></i>behaviour</span>
+        <span><i style="background:#A697C7"></i>state</span>
+        <span><i style="background:#4A8CCB"></i>what a sensor recorded</span>
+        <span><i style="background:#D85A30"></i>resting heart rate</span>
+        <span><i style="background:#378ADD"></i>night HRV</span>
+        <span style="opacity:.6">a dashed box is not agreed yet</span>
+      </div>
+      </div>
+    </div>
+    <figcaption>Almost every box has something in it now, because almost everything here has
+    some route to us: a sensor, a tap, a questionnaire, or a public feed. Nine are empty, for two
+    different reasons. Six are empty because the answer for this person is no, and a pipe means
+    a thing was present, so drawing nothing as a pipe would be a lie. The other three are the
+    <strong>reasoning</strong> cell, empty because nobody has yet decided what the question is.
+    It opens looking straight down the time axis, which is the cross-section, where the whole
+    nest is readable at once.</figcaption>
+  </section>
+
+
+  <section>
+    <span class="num">02</span>
+    <h2>Four pictures of how it is put together</h2>
+    <p>These are the arguments behind the shape of the model above, drawn rather than written out.
+    Every number in them is counted from the same file that draws the boxes, so when the model
+    changes these go stale and have to be redrawn.</p>
+
+    <div class="fig">
+      <svg viewBox="0 0 760 560" xmlns="http://www.w3.org/2000/svg" font-family="var(--body)">
+  <text x="16" y="22" font-size="15" font-weight="600" fill="var(--ink)">Context, split three ways by how fast it moves</text>
+  <text x="16" y="42" font-size="11.5" fill="var(--muted)">Not short term against long term. The useful line is what the engine can do with each one.</text>
+  <rect x="16" y="58" width="232" height="226" rx="8" fill="var(--sunk)" stroke="var(--line)"/>
+  <text x="32" y="80" font-size="12.5" font-weight="600" fill="var(--ink)">The moment</text>
+  <text x="32" y="98" font-size="10.5" fill="var(--muted)">changes within a day</text>
+  <g font-size="10.5" fill="var(--muted)">
+    <text x="32" y="124">where you are: home, work, outside</text>
+    <text x="32" y="142">light at the wrist, daylight, season</text>
+    <text x="32" y="160">sound: quiet or loud</text>
+    <text x="32" y="178">temperature, air</text>
+    <text x="32" y="196">who is around, alone or not</text>
+    <text x="32" y="214">crowds or nature</text>
+    <text x="32" y="232">the demands on today</text>
+  </g>
+  <text x="32" y="262" font-size="10.5" font-weight="600" fill="var(--accent)">SPLITS a baseline in two</text>
+  <text x="32" y="277" font-size="10" fill="var(--muted)">her heart at home against at work</text>
+  <rect x="264" y="58" width="232" height="226" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="280" y="80" font-size="12.5" font-weight="600" fill="var(--ink)">The standing floor</text>
+  <text x="280" y="98" font-size="10.5" fill="var(--muted)">holds for weeks or months</text>
+  <text x="280" y="122" font-size="10" font-weight="600" letter-spacing="0.4" fill="var(--muted)">ENVIRONMENTAL SAFETY</text>
+  <g font-size="10.5" fill="var(--muted)">
+    <text x="280" y="140">food security</text>
+    <text x="280" y="156">housing stability</text>
+    <text x="280" y="172">physical safety</text>
+    <text x="280" y="188">financial baseline</text>
+    <text x="280" y="204">sleep opportunity</text>
+  </g>
+  <text x="280" y="226" font-size="10" font-weight="600" letter-spacing="0.4" fill="var(--muted)">MEANING AND AGENCY</text>
+  <g font-size="10.5" fill="var(--muted)">
+    <text x="280" y="244">work quality</text>
+    <text x="280" y="260">relationship quality</text>
+    <text x="280" y="276">play access</text>
+  </g>
+  <rect x="512" y="58" width="232" height="226" rx="8" fill="var(--sunk)" stroke="var(--line)"/>
+  <text x="528" y="80" font-size="12.5" font-weight="600" fill="var(--ink)">Things that happen</text>
+  <text x="528" y="98" font-size="10.5" fill="var(--muted)">dated, then over</text>
+  <g font-size="10.5" fill="var(--muted)">
+    <text x="528" y="124">a loss, bad news</text>
+    <text x="528" y="142">a move, a job change</text>
+    <text x="528" y="160">a hard conversation</text>
+    <text x="528" y="178">an appointment</text>
+    <text x="528" y="196">travel, a trip away</text>
+    <text x="528" y="214">starting a medication</text>
+  </g>
+  <text x="528" y="262" font-size="10.5" font-weight="600" fill="var(--accent)">NO baseline at all</text>
+  <text x="528" y="277" font-size="10" fill="var(--muted)">they are what a baseline judges</text>
+  <rect x="264" y="300" width="232" height="86" rx="8" fill="none" stroke="var(--amber)" stroke-dasharray="5 4"/>
+  <text x="280" y="322" font-size="11" font-weight="600" fill="var(--amber)">CANNOT split a baseline</text>
+  <text x="280" y="342" font-size="10" fill="var(--muted)">If she has been housed for a year</text>
+  <text x="280" y="356" font-size="10" fill="var(--muted)">there is no unhoused half to</text>
+  <text x="280" y="370" font-size="10" fill="var(--muted)">compare her against.</text>
+  <rect x="16" y="402" width="728" height="142" rx="8" fill="var(--sunk)" stroke="var(--line)"/>
+  <text x="32" y="424" font-size="12.5" font-weight="600" fill="var(--ink)">So the middle column is a different kind of thing, and that is the reason to separate it</text>
+  <g font-size="11">
+    <text x="32" y="452" fill="var(--muted)">the moment</text>
+    <text x="240" y="452" font-weight="600" fill="var(--ink)">splits her day into parts you can compare</text>
+    <text x="32" y="476" fill="var(--muted)">the standing floor</text>
+    <text x="240" y="476" font-weight="600" fill="var(--ink)">moves where her whole normal sits</text>
+    <text x="240" y="492" font-size="10" fill="var(--muted)">only readable when it changes, or against other people</text>
+    <text x="32" y="516" fill="var(--muted)">things that happen</text>
+    <text x="240" y="516" font-weight="600" fill="var(--ink)">are the thing being judged, never the yardstick</text>
+  </g>
+</svg>
+    </div>
+
+    <div class="fig">
+      <svg viewBox="0 0 760 586" xmlns="http://www.w3.org/2000/svg" font-family="var(--body)">
+  <text x="16" y="22" font-size="15" font-weight="600" fill="var(--ink)">How many baselines this model asks for: <tspan id="n-total">9,471</tspan>, and <tspan id="n-rhy">21</tspan> rhythms on top</text>
+  <line x1="16" y1="40" x2="744" y2="40" stroke="var(--line)"/>
+  <text x="26" y="58" font-size="10" font-weight="600" letter-spacing="0.4" fill="var(--muted)">FAMILY</text>
+  <text x="210" y="58" font-size="10" font-weight="600" letter-spacing="0.4" fill="var(--muted)">SPLIT BY</text>
+  <text x="352" y="58" font-size="10" font-weight="600" letter-spacing="0.4" fill="var(--muted)">AN EXAMPLE</text>
+  <text x="680" y="58" font-size="10" font-weight="600" letter-spacing="0.4" fill="var(--muted)">HOW MANY</text>
+  <line x1="16" y1="66" x2="744" y2="66" stroke="var(--line)"/>
+  <g font-size="11.5">
+    <text x="26" y="88" font-weight="600" fill="var(--ink)">in general</text>
+    <text x="210" y="88" fill="var(--muted)">nothing</text>
+    <text x="352" y="88" fill="var(--muted)">her variability, full stop</text>
+    <text x="690" y="88" font-weight="600" fill="var(--ink)" id="n-mark">21</text>
+    <text x="26" y="114" font-weight="600" fill="var(--ink)">per situation</text>
+    <text x="210" y="114" fill="var(--muted)"><tspan id="n-sits">55</tspan> situations, <tspan id="n-act2">6</tspan> doing</text>
+    <text x="352" y="114" fill="var(--muted)">her heart while "I will be rejected" and awake</text>
+    <text x="690" y="114" font-weight="600" fill="var(--ink)" id="n-perstate">5,985</text>
+    <text x="26" y="140" font-weight="600" fill="var(--ink)">per context</text>
+    <text x="210" y="140" fill="var(--muted)"><tspan id="n-ctx">24</tspan> where, <tspan id="n-act">6</tspan> doing</text>
+    <text x="352" y="140" fill="var(--muted)">her heart at home while still, and at home asleep</text>
+    <text x="690" y="140" font-weight="600" fill="var(--ink)" id="n-perctx">3,024</text>
+    <text x="26" y="166" font-weight="600" fill="var(--ink)">per behaviour</text>
+    <text x="210" y="166" fill="var(--muted)"><tspan id="n-beh">21</tspan> events</text>
+    <text x="352" y="166" fill="var(--muted)">how far her heart climbs when she stands up</text>
+    <text x="690" y="166" font-weight="600" fill="var(--ink)" id="n-perbeh">441</text>
+  </g>
+  <line x1="16" y1="182" x2="744" y2="182" stroke="var(--line)"/>
+  <text x="26" y="202" font-size="12" font-weight="600" fill="var(--ink)">a biomarker baseline, for every pipe that runs constantly</text>
+  <text x="674" y="202" font-size="13" font-weight="600" fill="var(--accent)" id="n-total2">9,471</text>
+
+  <rect x="16" y="220" width="728" height="180" rx="8" fill="none" stroke="var(--line)"/>
+  <text x="32" y="242" font-size="12.5" font-weight="600" fill="var(--ink)">Why situation and context are multiplied, and behaviour is not</text>
+  <text x="32" y="264" font-size="11" fill="var(--muted)">A room is not an activity, and neither is an illness. Both overlap with what the body is doing. Her heart at home came</text>
+  <text x="32" y="280" font-size="11" fill="var(--muted)">back at 52.9, which reads like a remarkably calm house: she is home from midnight to nine and asleep from midnight</text>
+  <text x="32" y="296" font-size="11" fill="var(--muted)">to seven. Home is calmer than work turned out to mean night is calmer than day. Her heart while unwell said 64.4.</text>
+  <text x="32" y="318" font-size="11" font-weight="600" fill="var(--ink)">Crossed: 52 asleep at home, 64 awake at home, 72 awake at work. Unwell splits into 52.0 asleep and 66.6 awake.</text>
+  <text x="32" y="338" font-size="10.5" fill="var(--muted)">Behaviour is not crossed: nobody stands up all day, so there is no stretch of time to take a level over.</text>
+  <text x="32" y="354" font-size="10.5" fill="var(--muted)">A belief is crossed for the same reason as a room: "I will be rejected" spans sleep and work, so one number averages them.</text>
+  <text x="32" y="370" font-size="10.5" fill="var(--muted)">Making something of the day is not crossed, and not counted at all: it is an act of judging, not a stretch she is inside.</text>
+  <text x="32" y="386" font-size="10.5" fill="var(--muted)">The <tspan id="n-plain">9</tspan> states that already ARE an activity are left alone: deep sleep crossed with asleep is the same question twice.</text>
+
+  <rect x="16" y="416" width="728" height="96" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="32" y="440" font-size="12.5" font-weight="600" fill="var(--ink)">And the one you just named, which is not in that number</text>
+  <text x="32" y="464" font-size="11.5" fill="var(--muted)">The rhythm of the behaviour itself: how often you stand up, and when you go to bed.</text>
+  <text x="32" y="486" font-size="11" fill="var(--muted)">Not a biomarker split four ways. The behaviour on its own, counted and timed.</text>
+  <text x="32" y="504" font-size="11" font-weight="600" fill="var(--accent)"><tspan id="n-rhy2">21</tspan> more, one per event. Two numbers each: when, and how often.</text>
+
+  <text x="16" y="542" font-size="12.5" font-weight="600" fill="var(--ink)">Counted on the map is not the same as running in the engine</text>
+  <rect x="16" y="554" width="356" height="24" rx="8" fill="none" stroke="var(--line)"/>
+  <text x="32" y="570" font-size="10.5" fill="var(--muted)">All three shapes built. Six horizons, frozen origin.</text>
+  <rect x="388" y="554" width="356" height="24" rx="8" fill="none" stroke="var(--amber)" stroke-dasharray="5 4"/>
+  <text x="404" y="570" font-size="10.5" fill="var(--muted)">The tree: 8 of <tspan id="n-sit">79</tspan>. The other <tspan id="n-left">71</tspan> have no branch.</text>
+ </svg>
+    </div>
+
+    <div class="fig">
+      <svg viewBox="0 0 760 500" xmlns="http://www.w3.org/2000/svg" font-family="var(--body)">
+  <text x="16" y="22" font-size="15" font-weight="600" fill="var(--ink)">Conditions: where each one comes from, and what it costs her</text>
+  <text x="16" y="42" font-size="11.5" fill="var(--muted)">Four of the five need no device and no tap. One needs hardware nobody has. One is already counted twice.</text>
+  <line x1="16" y1="58" x2="744" y2="58" stroke="var(--line)"/>
+  <text x="26" y="76" font-size="10" font-weight="600" letter-spacing="0.4" fill="var(--muted)">WHAT</text>
+  <text x="200" y="76" font-size="10" font-weight="600" letter-spacing="0.4" fill="var(--muted)">FROM</text>
+  <text x="430" y="76" font-size="10" font-weight="600" letter-spacing="0.4" fill="var(--muted)">HOW GOOD</text>
+  <text x="640" y="76" font-size="10" font-weight="600" letter-spacing="0.4" fill="var(--muted)">COST TO HER</text>
+  <line x1="16" y1="84" x2="744" y2="84" stroke="var(--line)"/>
+  <g font-size="11.5">
+    <text x="26" y="106" font-weight="600" fill="var(--ink)">daylight hours</text>
+    <text x="200" y="106" fill="var(--muted)">the date and the city</text>
+    <text x="430" y="106" fill="var(--accent)">exact, to the minute</text>
+    <text x="640" y="106" font-weight="600" fill="var(--accent)">nothing</text>
+    <text x="200" y="121" font-size="10" fill="var(--muted)">pure astronomy, no sensor at all</text>
+    <text x="26" y="150" font-weight="600" fill="var(--ink)">time zone</text>
+    <text x="200" y="150" fill="var(--muted)">the phone already knows</text>
+    <text x="430" y="150" fill="var(--accent)">exact</text>
+    <text x="640" y="150" font-weight="600" fill="var(--accent)">nothing</text>
+    <text x="200" y="165" font-size="10" fill="var(--muted)">and how long since it changed falls out of it</text>
+    <text x="26" y="194" font-weight="600" fill="var(--ink)">air quality</text>
+    <text x="200" y="194" fill="var(--muted)">a public feed, by city</text>
+    <text x="430" y="194" fill="var(--muted)">hourly, station may be km away</text>
+    <text x="640" y="194" font-weight="600" fill="var(--accent)">nothing</text>
+    <text x="26" y="228" font-weight="600" fill="var(--ink)">temperature</text>
+    <text x="200" y="228" fill="var(--muted)">a weather feed, by city</text>
+    <text x="430" y="228" font-weight="600" fill="var(--amber)">outdoor only</text>
+    <text x="640" y="228" font-weight="600" fill="var(--accent)">nothing</text>
+    <text x="430" y="243" font-size="10" fill="var(--muted)">the room she sleeps in is the one that matters, and we cannot get it</text>
+  </g>
+  <line x1="16" y1="262" x2="744" y2="262" stroke="var(--line)"/>
+  <g font-size="11.5">
+    <text x="26" y="286" font-weight="600" fill="var(--ink)">noise</text>
+    <text x="200" y="286" fill="var(--muted)">a microphone</text>
+    <text x="430" y="286" font-weight="600" fill="var(--amber)">no device does this for us</text>
+    <text x="640" y="286" font-weight="600" fill="var(--amber)">high</text>
+    <text x="200" y="301" font-size="10" fill="var(--muted)">a watch can give a level without recording; a phone mic left on is a different thing entirely</text>
+    <text x="26" y="330" font-weight="600" fill="var(--ink)">season</text>
+    <text x="200" y="330" fill="var(--muted)">the date</text>
+    <text x="430" y="330" font-weight="600" fill="var(--amber)">already in daylight hours</text>
+    <text x="640" y="330" font-weight="600" fill="var(--accent)">nothing</text>
+    <text x="430" y="345" font-size="10" fill="var(--muted)">a coarse label for a thing we already measure finely</text>
+  </g>
+  <line x1="16" y1="364" x2="744" y2="364" stroke="var(--line)"/>
+  <rect x="16" y="382" width="728" height="104" rx="8" fill="var(--accent-soft)" stroke="var(--faint)"/>
+  <text x="32" y="406" font-size="12.5" font-weight="600" fill="var(--ink)">The cost nobody counts</text>
+  <text x="32" y="430" font-size="11" fill="var(--muted)">Four of these are described as free, and they are free of batteries and taps. They are not free of</text>
+  <text x="32" y="446" font-size="11" fill="var(--muted)">something else: all four need to know where she is.</text>
+  <text x="32" y="472" font-size="11" font-weight="600" fill="var(--accent)">The city is enough for every one of them. None of them needs the street, and asking for the street</text>
+  <text x="32" y="488" font-size="11" font-weight="600" fill="var(--accent)">because it is easier to collect would be taking more than the question needs.</text>
+</svg>
+    </div>
+
+    <div class="fig">
+      <svg viewBox="0 0 760 520" xmlns="http://www.w3.org/2000/svg" font-family="var(--body)">
+  <text x="16" y="22" font-size="15" font-weight="600" fill="var(--ink)">Five shapes a number can take, and which one each weather reading needs</text>
+  <rect x="16" y="38" width="728" height="76" rx="8" fill="var(--sunk)" stroke="var(--line)"/>
+  <text x="32" y="60" font-size="11" font-weight="600" letter-spacing="0.4" fill="var(--muted)">THE VOCABULARY THE ENGINE ALREADY HAS, FROM THE BODY SIDE</text>
+  <g font-size="11">
+    <text x="32" y="82" fill="var(--muted)"><tspan font-weight="600" fill="var(--ink)">level</tspan>  where it sits</text>
+    <text x="178" y="82" fill="var(--muted)"><tspan font-weight="600" fill="var(--ink)">change</tspan>  how fast it moved</text>
+    <text x="368" y="82" fill="var(--muted)"><tspan font-weight="600" fill="var(--ink)">spread</tspan>  how steady it is</text>
+    <text x="548" y="82" fill="var(--muted)"><tspan font-weight="600" fill="var(--ink)">time above</tspan>  how long</text>
+    <text x="32" y="102" fill="var(--muted)"><tspan font-weight="600" fill="var(--ink)">time since</tspan>  how long ago it last crossed</text>
+  </g>
+  <line x1="16" y1="132" x2="744" y2="132" stroke="var(--line)"/>
+  <text x="26" y="150" font-size="10" font-weight="600" letter-spacing="0.4" fill="var(--muted)">READING</text>
+  <text x="180" y="150" font-size="10" font-weight="600" letter-spacing="0.4" fill="var(--muted)">THE RIGHT SHAPE</text>
+  <text x="400" y="150" font-size="10" font-weight="600" letter-spacing="0.4" fill="var(--muted)">UNUSUAL COMPARED TO WHAT</text>
+  <line x1="16" y1="158" x2="744" y2="158" stroke="var(--line)"/>
+  <g font-size="11.5">
+    <text x="26" y="182" font-weight="600" fill="var(--ink)">pressure</text>
+    <text x="180" y="182" font-weight="600" fill="var(--amber)">change, not level</text>
+    <text x="400" y="182" fill="var(--muted)">her usual rate of change</text>
+    <text x="180" y="198" font-size="10" fill="var(--muted)">nobody reacts to 1005. They react to a ten point fall in a day.</text>
+    <text x="26" y="230" font-weight="600" fill="var(--ink)">air quality</text>
+    <text x="180" y="230" font-weight="600" fill="var(--ink)">level, and time above</text>
+    <text x="400" y="230" font-weight="600" fill="var(--amber)">a published health limit, not her</text>
+    <text x="180" y="246" font-size="10" fill="var(--muted)">the only one in the whole model where the threshold is not personal</text>
+    <text x="26" y="278" font-weight="600" fill="var(--ink)">temperature</text>
+    <text x="180" y="278" fill="var(--muted)">level</text>
+    <text x="400" y="278" fill="var(--muted)">her usual, and comfort for sleep</text>
+    <text x="26" y="310" font-weight="600" fill="var(--ink)">humidity</text>
+    <text x="180" y="310" font-weight="600" fill="var(--amber)">not on its own at all</text>
+    <text x="400" y="310" fill="var(--muted)">it modifies temperature</text>
+    <text x="180" y="326" font-size="10" fill="var(--muted)">damp cold and dry cold are different weather; 60% humidity alone means nothing</text>
+  </g>
+  <line x1="16" y1="346" x2="744" y2="346" stroke="var(--line)"/>
+  <rect x="16" y="364" width="356" height="142" rx="8" fill="var(--accent-soft)" stroke="var(--faint)"/>
+  <text x="32" y="388" font-size="12" font-weight="600" fill="var(--ink)">The engine's default rule</text>
+  <text x="32" y="412" font-size="10.5" fill="var(--muted)">Nothing is high or low. Everything is</text>
+  <text x="32" y="428" font-size="10.5" fill="var(--muted)">unusual for this person, measured against</text>
+  <text x="32" y="444" font-size="10.5" fill="var(--muted)">her own middle and her own spread.</text>
+  <text x="32" y="470" font-size="10.5" font-weight="600" fill="var(--accent)">For weather this still works, because</text>
+  <text x="32" y="486" font-size="10.5" font-weight="600" fill="var(--accent)">her usual weather is her city's weather.</text>
+  <rect x="388" y="364" width="356" height="142" rx="8" fill="none" stroke="var(--amber)" stroke-dasharray="5 4"/>
+  <text x="404" y="388" font-size="12" font-weight="600" fill="var(--ink)">And the two places it breaks</text>
+  <text x="404" y="412" font-size="10.5" fill="var(--muted)">Air quality has a limit that is about lungs,</text>
+  <text x="404" y="428" font-size="10.5" fill="var(--muted)">not about her. Thirty of smog is bad for</text>
+  <text x="404" y="444" font-size="10.5" fill="var(--muted)">everybody, however used to it she is.</text>
+  <text x="404" y="470" font-size="10.5" fill="var(--muted)">Pressure has no meaningful level at all.</text>
+  <text x="404" y="486" font-size="10.5" fill="var(--muted)">The whole signal is in the derivative.</text>
+</svg>
+    </div>
+  </section>
+
+  <section>
+    <span class="num">03</span>
+    <h2>From a device to a reading</h2>
+    <p>Everything above assumes a number arrived and meant something. This is the path it
+    travels to get there, and the two places where it can quietly stop meaning what it says.</p>
+    <p>The shape of it is <strong>one layer per question</strong>, so that swapping a sensor
+    does not mean rebuilding the model on top of it.</p>
+
+    <div class="fig">
+      <svg viewBox="0 0 760 492" xmlns="http://www.w3.org/2000/svg" font-family="var(--body)" role="img">
+        <title>The five stages between a device and something shown to a person</title>
+        <desc>Device adapters feed two parallel checks, per minute signal quality and per device
+        validation. Those feed a common feature layer, then a personal model, then interpretation
+        in the app.</desc>
+        <defs>
+          <marker id="stagear" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </marker>
+        </defs>
+
+        <rect x="16" y="40" width="728" height="56" rx="8" fill="var(--sunk)" stroke="var(--line)"/>
+        <text x="32" y="62" font-size="12.5" font-weight="600" fill="var(--ink)">1    Device adapters</text>
+        <text x="32" y="82" font-size="10.5" fill="var(--muted)">Polar H10, Corsano, white label. Raw signals, timestamps, units and device metadata kept.</text>
+        <line x1="380" y1="96" x2="380" y2="114" stroke="var(--line)" stroke-width="1.5" marker-end="url(#stagear)"/>
+
+        <rect x="16" y="120" width="356" height="84" rx="8" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.4"/>
+        <text x="32" y="142" font-size="12.5" font-weight="600" fill="var(--ink)">2a   Signal quality</text>
+        <text x="32" y="162" font-size="10.5" fill="var(--muted)">Artifact detection, missing data, timing precision,</text>
+        <text x="32" y="178" font-size="10.5" fill="var(--muted)">contact quality, motion contamination.</text>
+        <text x="32" y="194" font-size="10.5" font-weight="600" fill="var(--teal)">Can this particular minute be trusted?</text>
+
+        <rect x="388" y="120" width="356" height="84" rx="8" fill="var(--amber-soft)" stroke="var(--amber)" stroke-width="1.4"/>
+        <text x="404" y="142" font-size="12.5" font-weight="600" fill="var(--ink)">2b   Device validation</text>
+        <text x="404" y="162" font-size="10.5" fill="var(--muted)">Hardware checks, comparison against reference</text>
+        <text x="404" y="178" font-size="10.5" fill="var(--muted)">instruments. HR error, interval error, agreement.</text>
+        <text x="404" y="194" font-size="10.5" font-weight="600" fill="var(--amber)">How good is this device configuration?</text>
+
+        <line x1="194" y1="204" x2="194" y2="218" stroke="var(--line)" stroke-width="1.5"/>
+        <line x1="566" y1="204" x2="566" y2="218" stroke="var(--line)" stroke-width="1.5"/>
+        <line x1="194" y1="218" x2="566" y2="218" stroke="var(--line)" stroke-width="1.5"/>
+        <line x1="380" y1="218" x2="380" y2="234" stroke="var(--line)" stroke-width="1.5" marker-end="url(#stagear)"/>
+
+        <rect x="16" y="240" width="728" height="56" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.4"/>
+        <text x="32" y="262" font-size="12.5" font-weight="600" fill="var(--ink)">3    Common physiological feature layer</text>
+        <text x="32" y="282" font-size="10.5" fill="var(--muted)">HR, HRV and PRV, movement, sleep, EDA, temperature, pulse height. Standardised definitions, units and windows.</text>
+        <line x1="380" y1="296" x2="380" y2="314" stroke="var(--line)" stroke-width="1.5" marker-end="url(#stagear)"/>
+
+        <rect x="16" y="320" width="728" height="56" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.4"/>
+        <text x="32" y="342" font-size="12.5" font-weight="600" fill="var(--ink)">4    Personal physiological model</text>
+        <text x="32" y="362" font-size="10.5" fill="var(--muted)">Your baseline, changes from baseline, reactivity, recovery, longitudinal patterns.</text>
+        <line x1="380" y1="376" x2="380" y2="394" stroke="var(--line)" stroke-width="1.5" marker-end="url(#stagear)"/>
+
+        <rect x="16" y="400" width="728" height="68" rx="8" fill="var(--sunk)" stroke="var(--line)"/>
+        <text x="32" y="422" font-size="12.5" font-weight="600" fill="var(--ink)">5    Psychological interpretation and app</text>
+        <text x="32" y="442" font-size="10.5" fill="var(--muted)">Combine physiology with self-reports and context.</text>
+        <text x="32" y="458" font-size="10.5" fill="var(--muted)">Show evidence, uncertainty and appropriate next steps.</text>
+      </svg>
+      <figcaption>Two is one tier and two questions. A good device can have a bad minute, and a
+      bad device can have a minute that looks clean and is still wrong. Keeping them apart is what
+      lets a reading say which of the two is the reason it is being held back.</figcaption>
+    </div>
+
+    <h3>1 &middot; Device adapters</h3>
+    <p>Every device speaks its own language. The adapter brings it in <strong>without losing
+    anything</strong>: the raw signal, the real timestamps, the units, and which device it came
+    from.</p>
+    <p>Nothing is thrown away here, and that is the whole rule. The band writes about twenty one
+    megabytes a night, and every feature argued over in the sections above was recomputed from
+    that raw file more than once. An adapter that kept only summaries would have made all of it
+    impossible.</p>
+
+    <h3>2a &middot; Signal quality and measurement confidence</h3>
+    <p><strong>Can I trust this particular minute?</strong> Asked of every minute on its own: was
+    the waveform clipped, did the accelerometer latch, was there movement, how many beats were
+    clean.</p>
+    <p>This layer exists already and its doctrine is right: it <strong>refuses rather than
+    discounts</strong>, so a minute either carries a reading or carries a written reason why not.
+    What is wrong is what it refuses on. Measured on 23 October, minutes of ordinary arm movement
+    read 7 to 16 mg and passed the 15 mg gate, while being four times worse than the still ones.
+    The gate is in the right place and watching the wrong thing.</p>
+
+    <h3>2b &middot; Device validation and reference comparison</h3>
+    <p><strong>How good is this device, in general?</strong> Asked once per device, against a
+    reference, across conditions. This is the layer the engine does not have at all.</p>
+    <p>It is what one session with a chest ECG produced: the wrist is about 1.2 bpm from the chest
+    at rest and 20.9 ms out on variability, rising to 83.8 ms with arm movement. It is also what
+    turns a confidence number from a feeling into a measurement, which the engine's own comment
+    admits it is not yet: the ceilings are ordinal, not calibrated.</p>
+
+    <h3>3 &middot; Common physiological feature layer</h3>
+    <p>One agreed definition of each quantity, so everything downstream reads the same vocabulary
+    whatever produced it.</p>
+    <p>The trap is here. <strong>Chest variability and wrist variability are not the same
+    quantity</strong>: 37 ms against 57 on the same minutes. If they share a field name, something
+    downstream will average them, and no confidence score prevents that. They have to arrive as
+    distinct quantities carrying where they came from, not as one row called HRV.</p>
+
+    <div class="fig">
+      <svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg" font-family="var(--body)" role="img">
+        <title>Three signals, nine descriptions each, twenty seven markers</title>
+        <desc>A grid of three rows and nine columns. Twenty five cells are built and produce
+        values on her own recordings. Two, how the pulse height repeats and how steadily, are not
+        computed by anything.</desc>
+        <text x="151" y="44" text-anchor="middle" font-size="9.5" fill="var(--muted)">level</text>
+        <text x="221" y="37" text-anchor="middle" font-size="9.5" fill="var(--muted)">act</text>
+        <text x="221" y="48" text-anchor="middle" font-size="9.5" fill="var(--muted)">rate</text>
+        <text x="291" y="37" text-anchor="middle" font-size="9.5" fill="var(--muted)">act</text>
+        <text x="291" y="48" text-anchor="middle" font-size="9.5" fill="var(--muted)">time</text>
+        <text x="361" y="37" text-anchor="middle" font-size="9.5" fill="var(--muted)">deact</text>
+        <text x="361" y="48" text-anchor="middle" font-size="9.5" fill="var(--muted)">rate</text>
+        <text x="431" y="37" text-anchor="middle" font-size="9.5" fill="var(--muted)">deact</text>
+        <text x="431" y="48" text-anchor="middle" font-size="9.5" fill="var(--muted)">time</text>
+        <text x="501" y="44" text-anchor="middle" font-size="9.5" fill="var(--muted)">swing</text>
+        <text x="571" y="37" text-anchor="middle" font-size="9.5" fill="var(--muted)">smooth</text>
+        <text x="571" y="48" text-anchor="middle" font-size="9.5" fill="var(--muted)">ness</text>
+        <text x="641" y="37" text-anchor="middle" font-size="9.5" fill="var(--muted)">how it</text>
+        <text x="641" y="48" text-anchor="middle" font-size="9.5" fill="var(--muted)">repeats</text>
+        <text x="711" y="37" text-anchor="middle" font-size="9.5" fill="var(--muted)">steady</text>
+        <text x="711" y="48" text-anchor="middle" font-size="9.5" fill="var(--muted)">repeat</text>
+        <text x="106" y="88" text-anchor="end" font-size="11.5" fill="var(--ink)">heart rate</text>
+        <rect x="120" y="64" width="62" height="40" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.2"/>
+        <rect x="190" y="64" width="62" height="40" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.2"/>
+        <rect x="260" y="64" width="62" height="40" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.2"/>
+        <rect x="330" y="64" width="62" height="40" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.2"/>
+        <rect x="400" y="64" width="62" height="40" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.2"/>
+        <rect x="470" y="64" width="62" height="40" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.2"/>
+        <rect x="540" y="64" width="62" height="40" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.2"/>
+        <text x="571" y="88" text-anchor="middle" font-size="9.5" fill="var(--teal)">RMSSD</text>
+        <rect x="610" y="64" width="62" height="40" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.2"/>
+        <text x="641" y="88" text-anchor="middle" font-size="9.5" fill="var(--teal)">RSA</text>
+        <rect x="680" y="64" width="62" height="40" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.2"/>
+        <text x="711" y="88" text-anchor="middle" font-size="9.5" fill="var(--teal)">breath</text>
+        <text x="106" y="136" text-anchor="end" font-size="11.5" fill="var(--ink)">movement</text>
+        <rect x="120" y="112" width="62" height="40" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.2"/>
+        <rect x="190" y="112" width="62" height="40" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.2"/>
+        <rect x="260" y="112" width="62" height="40" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.2"/>
+        <rect x="330" y="112" width="62" height="40" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.2"/>
+        <rect x="400" y="112" width="62" height="40" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.2"/>
+        <rect x="470" y="112" width="62" height="40" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.2"/>
+        <rect x="540" y="112" width="62" height="40" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.2"/>
+        <text x="571" y="136" text-anchor="middle" font-size="9.5" fill="var(--teal)">jerk</text>
+        <rect x="610" y="112" width="62" height="40" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.2"/>
+        <text x="641" y="136" text-anchor="middle" font-size="9.5" fill="var(--teal)">period</text>
+        <rect x="680" y="112" width="62" height="40" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.2"/>
+        <text x="711" y="136" text-anchor="middle" font-size="9.5" fill="var(--teal)">repeat</text>
+        <text x="106" y="184" text-anchor="end" font-size="11.5" fill="var(--ink)">pulse height</text>
+        <rect x="120" y="160" width="62" height="40" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.2"/>
+        <rect x="190" y="160" width="62" height="40" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.2"/>
+        <rect x="260" y="160" width="62" height="40" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.2"/>
+        <rect x="330" y="160" width="62" height="40" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.2"/>
+        <rect x="400" y="160" width="62" height="40" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.2"/>
+        <rect x="470" y="160" width="62" height="40" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.2"/>
+        <rect x="540" y="160" width="62" height="40" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.2"/>
+        <text x="571" y="184" text-anchor="middle" font-size="9.5" fill="var(--teal)">spread</text>
+        <rect x="610" y="160" width="62" height="40" rx="6" fill="var(--sunk)" stroke="var(--line)" stroke-width="1.2"/>
+        <text x="641" y="184" text-anchor="middle" font-size="9.5" fill="var(--faint)">none</text>
+        <rect x="680" y="160" width="62" height="40" rx="6" fill="var(--sunk)" stroke="var(--line)" stroke-width="1.2"/>
+        <text x="711" y="184" text-anchor="middle" font-size="9.5" fill="var(--faint)">none</text>
+        <rect x="120" y="222" width="12" height="12" rx="3" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.2"/>
+        <text x="140" y="232" font-size="10.5" fill="var(--muted)">built, and produces values on her own band</text>
+        <rect x="430" y="222" width="12" height="12" rx="3" fill="var(--sunk)" stroke="var(--line)" stroke-width="1.2"/>
+        <text x="450" y="232" font-size="10.5" fill="var(--muted)">nothing computes it</text>
+        <text x="16" y="266" font-size="11" fill="var(--muted)">27 cells. 25 built, 2 nobody has asked for.</text>
+        <text x="16" y="286" font-size="11" font-weight="600" fill="var(--ink)">RMSSD is the heart's smoothness. It was never a special thing. It is one cell of this grid.</text>
+      </svg>
+      <figcaption>Re-checked against her own recordings of 23 October rather than copied from the
+      last time it was drawn. Two cells that were being built, how movement repeats and how
+      steadily, now produce values: 13 minutes of the 40 in that recording, and silent in the still
+      ones because stillness has no rhythm to find. The heart's steady repeat, which was waiting on
+      a wiring job, produces values in 19.</figcaption>
+    </div>
+
+    <p><strong>This is the feature layer drawn out.</strong> Three things the band carries, each
+    described the same nine ways, so what reaches the model is twenty seven markers rather than one
+    or two summary numbers.</p>
+
+    <p>The point of drawing it is what it does to <strong>RMSSD</strong>. Everything above treats
+    the brake as the centre of the reading, and three days of measurement went into one cell of
+    this grid. On the grid it is the heart's smoothness, sitting beside eight other descriptions of
+    the same signal and eighteen descriptions of two others.</p>
+
+    <p>That matters for the problem in section 03. The wrist's smoothness is the cell we cannot
+    yet trust, 20.9 ms out at rest. <strong>It is not the only cell.</strong> The level, the two
+    activation shapes, the two deactivation shapes and the swing are all computed from the same
+    beats and none of them has been checked against the chest. A reading built from several of
+    them might survive one of them being poor, which is a different design from one that rests on
+    the brake alone.</p>
+
+    <p>The two grey cells are honest absences. Nothing computes how the pulse height repeats or
+    how steadily it repeats, because nobody has asked for them. They are drawn so that the
+    question stays visible rather than being forgotten.</p>
+
+    <h3>4 &middot; Personal physiological model</h3>
+    <p>Your middle and your spread, learned from your own minutes, so a reading can say how far out
+    you are in your own terms rather than against a population.</p>
+    <p><strong>Keyed on method, device and pipeline</strong>, because all three move the number. The
+    method decides whether it is even the same quantity. The device decides the bias within that
+    quantity. The pipeline decides it too: two detectors on identical bytes gave 20.9 ms and 9.1 ms.
+    Baselines are merged only when a comparison has shown they agree, never by assumption.</p>
+
+    <h3>5 &middot; Psychological interpretation and app</h3>
+    <p>Physiology joined to what she said and what was happening, shown with its uncertainty rather
+    than as a verdict.</p>
+    <p>One thing belongs up here that is easy to lose: <strong>the rules about how a question may be
+    asked</strong>. A prompt that announces why it arrived collects an answer about the detector
+    rather than about the person. That is a measurement constraint, not interface styling, and if it
+    lives only in the app it dies with the next rewrite.</p>
+  </section>
+
+  <section>
+    <span class="num">04</span>
+    <h2>Everything in it, written out</h2>
+    <p>The same data that draws the boxes. A line in <strong>grey</strong> has not been agreed.
+    A value with a <u>dotted underline</u> is one nothing can sense, so only the person can tell us.</p>
+    <div id="contents" class="contents"></div>
+  </section>
+
+  <section>
+    <span class="num">05</span>
+    <h2>Data engineering</h2>
+    <style>
+    .de-layer{border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:12px;background:var(--surface)}
+    .de-tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:99px;display:inline-block;margin-bottom:9px}
+    .de-ta{background:var(--blue-soft);color:var(--blue)}
+    .de-tb{background:var(--teal-soft);color:var(--teal)}
+    .de-tc{background:var(--accent-soft);color:var(--accent)}
+    .de-q{font-size:15px;font-weight:600;color:var(--ink);margin:0 0 7px}
+    .de-layer p{margin:0 0 6px;font-size:14px;max-width:70ch}
+    .de-layer p:last-child{margin-bottom:0}
+    .de-cmp{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:var(--sunk);margin-top:16px}
+    .de-cmp .de-q{margin-bottom:4px}
+    .de-cmp p{margin:0;font-size:14px;color:var(--muted)}
+    .de-cmp ul{margin:7px 0 0;padding-left:20px;color:var(--muted);font-size:14px;line-height:1.7}
+    .de-gridwrap{margin-top:18px}
+    .de-tn{font-size:14px;font-weight:600;color:var(--ink);margin:20px 0 9px}
+    .de-tn:first-child{margin-top:0}
+    .de-tn em{font-style:normal;font-weight:400;font-size:12.5px;color:var(--muted);margin-left:7px}
+    .de-grid{display:grid;grid-template-columns:142px repeat(9,minmax(74px,1fr));gap:6px;min-width:860px}
+    .de-h{font-family:var(--mono);font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--faint);text-align:center;line-height:1.35;align-self:end;padding-bottom:5px}
+    .de-r{font-size:12.5px;color:var(--ink);display:flex;align-items:center;justify-content:flex-end;padding-right:6px;text-align:right;line-height:1.25}
+    .de-c{border-radius:8px;height:46px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11.5px;border:1px solid}
+    .de-c.meas{background:var(--teal-soft);border-color:var(--teal);color:var(--teal)}
+    .de-c.calc{background:var(--amber-soft);border-color:var(--amber);color:var(--amber)}
+    .de-c.todo{background:var(--sunk);border-color:var(--line);color:var(--faint);border-style:dashed;font-size:10.5px}
+    .de-key{display:flex;gap:22px;flex-wrap:wrap;margin-top:15px;font-size:12.5px;color:var(--muted)}
+    .de-key i{display:inline-block;width:13px;height:13px;border-radius:4px;border:1px solid var(--teal);background:var(--teal-soft);margin-right:7px;vertical-align:-2px}
+    .de-key i.calc{border-color:var(--amber);background:var(--amber-soft)}
+    .de-key i.todo{border-color:var(--line);background:var(--sunk);border-style:dashed}
+    .de-prose h3{font-size:15px;margin:20px 0 7px}
+    .de-prose p{font-size:14.5px}
+    </style>
+
+    <h3 style="font-size:17px;margin:0 0 14px">Three parallel representations for Eywa</h3>
+
+    <div class="de-layer">
+      <span class="de-tag de-ta">A &mdash; Raw signal</span>
+      <p class="de-q">What happened at the sensor level?</p>
+      <p>Original PPG, ECG, EDA and accelerometer measurements.</p>
+      <p>The model can discover patterns without being restricted to predefined features.</p>
+    </div>
+
+    <div class="de-layer">
+      <span class="de-tag de-tb">B &mdash; Your 27 descriptors</span>
+      <p class="de-q">How did the physiological signal behave?</p>
+      <p>Activation rate, deactivation time, swing, smoothness, repetition and so on.</p>
+      <p>These encode your hypotheses about meaningful physiological dynamics.</p>
+      <div class="de-gridwrap">
+      <h4 class="de-tn">ECG <em>electrical, from the chest</em></h4>
+      <div class="scroller">
+        <div class="de-grid">
+          <div></div>
+          <div class="de-h">level</div>
+          <div class="de-h">act rate</div>
+          <div class="de-h">act time</div>
+          <div class="de-h">deact rate</div>
+          <div class="de-h">deact time</div>
+          <div class="de-h">swing</div>
+          <div class="de-h">smooth ness</div>
+          <div class="de-h">how it repeats</div>
+          <div class="de-h">steady repeat</div>
+          <div class="de-r">heart rate, from RR</div>
+          <div class="de-c meas">bpm</div>
+          <div class="de-c meas">bpm/s</div>
+          <div class="de-c meas">s</div>
+          <div class="de-c meas">bpm/s</div>
+          <div class="de-c meas">s</div>
+          <div class="de-c todo">to define</div>
+          <div class="de-c todo">to define</div>
+          <div class="de-c todo">to define</div>
+          <div class="de-c todo">to define</div>
+        </div>
+      </div>
+      <h4 class="de-tn">PPG <em>optical, from the wrist</em></h4>
+      <div class="scroller">
+        <div class="de-grid">
+          <div></div>
+          <div class="de-h">level</div>
+          <div class="de-h">act rate</div>
+          <div class="de-h">act time</div>
+          <div class="de-h">deact rate</div>
+          <div class="de-h">deact time</div>
+          <div class="de-h">swing</div>
+          <div class="de-h">smooth ness</div>
+          <div class="de-h">how it repeats</div>
+          <div class="de-h">steady repeat</div>
+          <div class="de-r">heart rate, from PPI</div>
+          <div class="de-c meas">bpm</div>
+          <div class="de-c meas">bpm/s</div>
+          <div class="de-c meas">s</div>
+          <div class="de-c meas">bpm/s</div>
+          <div class="de-c meas">s</div>
+          <div class="de-c todo">to define</div>
+          <div class="de-c todo">to define</div>
+          <div class="de-c todo">to define</div>
+          <div class="de-c todo">to define</div>
+          <div class="de-r">pulse amplitude</div>
+          <div class="de-c calc">counts</div>
+          <div class="de-c calc">counts/s</div>
+          <div class="de-c calc">s</div>
+          <div class="de-c calc">counts/s</div>
+          <div class="de-c calc">s</div>
+          <div class="de-c todo">to define</div>
+          <div class="de-c todo">to define</div>
+          <div class="de-c todo">to define</div>
+          <div class="de-c todo">to define</div>
+          <div class="de-r">pulse width</div>
+          <div class="de-c calc">ms</div>
+          <div class="de-c calc">ms/s</div>
+          <div class="de-c calc">s</div>
+          <div class="de-c calc">ms/s</div>
+          <div class="de-c calc">s</div>
+          <div class="de-c todo">to define</div>
+          <div class="de-c todo">to define</div>
+          <div class="de-c todo">to define</div>
+          <div class="de-c todo">to define</div>
+        </div>
+      </div>
+      <h4 class="de-tn">Movement <em>accelerometer, carried by either device</em></h4>
+      <div class="scroller">
+        <div class="de-grid">
+          <div></div>
+          <div class="de-h">level</div>
+          <div class="de-h">act rate</div>
+          <div class="de-h">act time</div>
+          <div class="de-h">deact rate</div>
+          <div class="de-h">deact time</div>
+          <div class="de-h">swing</div>
+          <div class="de-h">smooth ness</div>
+          <div class="de-h">how it repeats</div>
+          <div class="de-h">steady repeat</div>
+          <div class="de-r">movement</div>
+          <div class="de-c meas">mg</div>
+          <div class="de-c meas">mg/s</div>
+          <div class="de-c meas">s</div>
+          <div class="de-c meas">mg/s</div>
+          <div class="de-c meas">s</div>
+          <div class="de-c todo">to define</div>
+          <div class="de-c todo">to define</div>
+          <div class="de-c todo">to define</div>
+          <div class="de-c todo">to define</div>
+        </div>
+      </div>
+        <div class="de-key">
+          <span><i></i>measured: what the detector itself produces</span>
+          <span><i class="calc"></i>calculated: measured off the detected beat</span>
+          <span><i class="todo"></i>still to define</span>
+        </div>
+        <figcaption>Every unit is real time, never samples or beats, so the same row holds on a
+        device with a different sampling rate. Heart rate appears in both tables on purpose:
+        it is one quantity measured two ways, and comparing them is how the wrist gets checked
+        against the chest. The four right-hand columns wait on two decisions: what marks the start
+        and end of an event, and what swing actually means.</figcaption>
+      </div>
+    </div>
+
+    <div class="de-layer">
+      <span class="de-tag de-tc">C &mdash; Conventional physiological metrics</span>
+      <p class="de-q">What established physiological quantities can we calculate?</p>
+      <p>HR, RMSSD, SDNN, respiratory rate, EDA tonic level, SCR frequency and other validated features.</p>
+    </div>
+
+    <div class="de-cmp">
+      <p class="de-q">Multimodal pattern-recognition model</p>
+      <p>Compare:</p>
+      <ul>
+        <li>Raw signals alone.</li>
+        <li>Your 27 descriptors alone.</li>
+        <li>Conventional metrics alone.</li>
+        <li>Combinations of all three.</li>
+      </ul>
+    </div>
+
+    <div class="de-prose">
+      <p>This allows you to investigate whether your descriptors actually add predictive information.</p>
+      <p>For example, does your activation-time feature improve prediction compared with a model that receives only raw HR data?</p>
+      <p>If it doesn't, perhaps the neural network can learn that information independently.</p>
+      <p>If it does, your feature engineering is adding something useful, especially when data are limited.</p>
+      <h3>6. One major issue: raw data requires more training examples</h3>
+      <p>This is where I would be careful.</p>
+      <p>Imagine you have 49 hours of physiological recordings but only three reliably labelled psychological episodes.</p>
+      <p>A neural network cannot automatically infer which signal patterns correspond to distress just because it has thousands of measurements.</p>
+      <p>It needs examples linking patterns to meaningful outcomes.</p>
+      <p>There are techniques such as self-supervised learning and contrastive learning that can help a model learn useful representations from large quantities of unlabelled data. But they don't eliminate the need for reliable labels when you eventually want to recognise psychological experiences.</p>
+      <p>You should also test whether the model generalises to new people, rather than simply recognising the individual patterns of the people in its training data.</p>
+    </div>
+  </section>
+  <footer>
+    The working copy. Contents are proposed until argued with; a dashed box has not been agreed.
+    The ninety day person is invented, and only fills the few boxes we have data for.
+  </footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="model.js"></script>
+<script src="timed-records.js"></script>
+<script src="work.js"></script>
+<script src="mech.js"></script>
+<script src="counts.js"></script>
+
+</body></html>
