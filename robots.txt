@@ -1,2 +1,10 @@
+# Fetching is allowed. Indexing is not, and that is handled by the
+# <meta name="robots" content="noindex, nofollow, noarchive"> in index.html.
+#
+# WHY THIS FILE NO LONGER SAYS Disallow. It did, and it was wrong twice over.
+# It blocked the agents this page exists for, which honour robots.txt and
+# report a disallowed page as unreachable. And it blocked the very crawlers
+# that needed to fetch the page to read the noindex tag, so it prevented the
+# thing it was written to achieve.
 User-agent: *
-Disallow: /
+Allow: /
